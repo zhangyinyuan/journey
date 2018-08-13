@@ -1,6 +1,7 @@
 package com.yuan.ngu.crossorigin;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,17 +31,15 @@ public class TestCrossOriginController {
         return jsonObject;
     }
 
-    @RequestMapping(path = "/testHttpCrossOrigin", method = RequestMethod.GET)
+    @RequestMapping(path = "/testHttpCrossOrigin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void testHttpCrossOrigin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "0");
         response.setHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With,userId,token");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("XDomainRequestAllowed", "1");
-
         String callback = request.getParameter("callback");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", "0000");
