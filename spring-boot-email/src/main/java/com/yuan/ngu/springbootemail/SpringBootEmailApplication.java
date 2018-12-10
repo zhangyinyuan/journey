@@ -51,7 +51,8 @@ public class SpringBootEmailApplication {
             //抄送邮件接收人
             helper.setCc(reciver);
             helper.setBcc("2602200571@qq.com");
-            helper.setSubject("发送带抄送的邮件");//邮件标题
+            //邮件主题
+            helper.setSubject("发送带抄送的邮件");
             helper.setText("<html><body> <h3>我是邮件的内容</h3></body></html>", true);//可以使用html
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
