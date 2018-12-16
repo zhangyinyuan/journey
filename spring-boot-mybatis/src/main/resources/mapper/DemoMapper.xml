@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuan.ngu.springbootmybatis.mapper.DemoDao">
+    <resultMap id="BaseResultMap" type="com.yuan.ngu.springbootmybatis.model.Demo">
+        <result column="DEMO_ID" property="demoId" jdbcType="VARCHAR"/>
+        <result column="DEMO_REMARK" property="demoRemark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DEMO_ID, DEMO_REMARK
+    </sql>
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM DEMO
+        <where>
+            <if test="null != DEMO_ID">
+                and DEMO_ID = #{demoId}
+            </if>
+            <if test="null != demoRemark">
+                and DEMO_REMARK = #{demoRemark}
+            </if>
+        </where>
+    </select>
+</mapper>
