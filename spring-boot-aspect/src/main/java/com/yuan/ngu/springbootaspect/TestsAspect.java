@@ -104,9 +104,6 @@ public class TestsAspect {
     @AfterThrowing(throwing = "ex", pointcut = "logPointCut()")//
     public void doAfterThrowing(Throwable ex) {
         log.error("doAfterThrowing called with 目标方法抛出异常 ", ex);
-        if ("".length() == 0) {
-            throw new RuntimeException("测试异常");
-        }
     }
 
     /**
@@ -120,6 +117,7 @@ public class TestsAspect {
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         log.info("doAround called with pjp = ");
         Object ob = pjp.proceed();
+        log.info("doAround called with pjp.proceed 执行结束");
         return ob;
     }
 }
