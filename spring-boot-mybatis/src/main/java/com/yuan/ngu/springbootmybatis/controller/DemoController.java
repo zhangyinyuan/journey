@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 @RequestMapping(path = "/demo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DemoController {
 
-    @Autowired
+    @Resource
     private DemoDao demoDao;
 
     @RequestMapping(path = "/selectOneDemo", method = RequestMethod.GET)
