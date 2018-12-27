@@ -10,7 +10,7 @@ public class TestsAspectController {
     @RequestMapping(path = "/")
     public Object testsAspect() {
 //        if ("".length() == 0){
-//            throw new RuntimeException("测试异常");
+//            throw new RuntimeException("测试异常0000");
 //        }
         return "testsAspect";
     }

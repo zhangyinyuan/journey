@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class Jobs {
+public class Jobs2 {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     public final static long ONE_Minute = 1000;
 
@@ -19,7 +19,7 @@ public class Jobs {
 //    public void fixedDelayJob() {
 //        System.out.println(Dates.format_yyyyMMddHHmmss(new Date()) + " >>fixedDelay执行....");
 //    }
-//
+
 //    @Scheduled(fixedRate = ONE_Minute)
 //    public void fixedRateJob() {
 //        System.out.println(Dates.format_yyyyMMddHHmmss(new Date()) + " >>fixedRate执行....");
@@ -34,7 +34,7 @@ public class Jobs {
             Long test0212313213s13fa1fda = jedis.setnx("test0212313213s13fa1fda", "12313");
             log.info("cronJob called test0212313213s13fa1fda = {}", test0212313213s13fa1fda);
             jedis.del("test0212313213s13fa1fda");
-            jedis.close();
+//            jedis.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

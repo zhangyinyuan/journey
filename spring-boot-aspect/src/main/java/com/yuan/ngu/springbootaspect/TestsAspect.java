@@ -93,6 +93,11 @@ public class TestsAspect {
     @AfterReturning(returning = "ret", pointcut = "logPointCut()")//
     public void doAfterReturning(Object ret) {
         log.info("doAfterReturning called with ret = {}", JSON.toJSONString(ret));
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -104,6 +109,11 @@ public class TestsAspect {
     @AfterThrowing(throwing = "ex", pointcut = "logPointCut()")//
     public void doAfterThrowing(Throwable ex) {
         log.error("doAfterThrowing called with 目标方法抛出异常 ", ex);
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
