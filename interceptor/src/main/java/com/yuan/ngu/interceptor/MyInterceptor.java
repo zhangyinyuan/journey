@@ -20,6 +20,7 @@ public class MyInterceptor implements HandlerInterceptor {
         //获取session
         HttpSession session = request.getSession(true);
         //判断用户ID是否存在，不存在就跳转到登录界面
+        session.setAttribute("userId","");
         if (session.getAttribute("userId") == null) {
             log.info("------:跳转到login页面！");
             response.sendRedirect(request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/login.html");
