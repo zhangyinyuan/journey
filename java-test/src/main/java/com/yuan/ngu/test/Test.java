@@ -17,5 +17,7 @@ public class Test {
         String origin = "<![CDATA[http://xz.bwfapiao.com/500102000000183/152000186357/152000186357_68967079.pdf?Expires=1858736035&OSSAccessKeyId=LTAIB3SkRb2V8Vu1&Signature=8Qp7QkUwUGDdAlV8bXgG8xxxPRs%3D]]>";
         System.out.println(origin.replaceAll("<!\\[CDATA\\[","").replaceAll("]]>",""));
         System.out.println(origin.replace("<!\\[CDATA\\[","").replace("]]>",""));
+
+        System.out.println(Math.abs(-10.11212));
     }
 }
