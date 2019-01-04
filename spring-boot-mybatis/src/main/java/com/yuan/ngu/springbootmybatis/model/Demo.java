@@ -1,21 +1,16 @@
 package com.yuan.ngu.springbootmybatis.model;
 
-import java.io.Serializable;
+public class Demo {
+    private String demoId;
 
-public class Demo implements Serializable {
-    private static final long serialVersionUID = -8418018251159928593L;
-    private Integer demoId;
     private String demoRemark;
 
-    public Demo() {
-    }
-
-    public Integer getDemoId() {
+    public String getDemoId() {
         return demoId;
     }
 
-    public void setDemoId(Integer demoId) {
-        this.demoId = demoId;
+    public void setDemoId(String demoId) {
+        this.demoId = demoId == null ? null : demoId.trim();
     }
 
     public String getDemoRemark() {
@@ -23,6 +18,6 @@ public class Demo implements Serializable {
     }
 
     public void setDemoRemark(String demoRemark) {
-        this.demoRemark = demoRemark;
+        this.demoRemark = demoRemark == null ? null : demoRemark.trim();
     }
 }
