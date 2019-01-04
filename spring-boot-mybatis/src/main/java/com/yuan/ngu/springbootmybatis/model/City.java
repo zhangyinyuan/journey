@@ -13,6 +13,11 @@ public class City {
 
     private Integer testInt;
 
+    public City(String country, String name) {
+        this.country = country;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

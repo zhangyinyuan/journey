@@ -1,132 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yuan.ngu.springbootmybatis.mapper.DemoMapper">
-  <resultMap id="BaseResultMap" type="com.yuan.ngu.springbootmybatis.model.Demo">
-    <id column="demo_id" jdbcType="VARCHAR" property="demoId" />
-    <result column="demo_remark" jdbcType="VARCHAR" property="demoRemark" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuan.ngu.springbootmybatis.mapper.DemoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuan.ngu.springbootmybatis.model.Demo" >
+    <id column="demo_id" property="demoId" jdbcType="VARCHAR" />
+    <result column="demo_remark" property="demoRemark" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     demo_id, demo_remark
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from demo
     where demo_id = #{demoId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from demo
     where demo_id = #{demoId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
+  <insert id="insert" parameterType="com.yuan.ngu.springbootmybatis.model.Demo" >
     insert into demo (demo_id, demo_remark)
     values (#{demoId,jdbcType=VARCHAR}, #{demoRemark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
+  <insert id="insertSelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo" >
     insert into demo
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="demoId != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="demoId != null" >
         demo_id,
       </if>
-      <if test="demoRemark != null">
+      <if test="demoRemark != null" >
         demo_remark,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="demoId != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="demoId != null" >
         #{demoId,jdbcType=VARCHAR},
       </if>
-      <if test="demoRemark != null">
+      <if test="demoRemark != null" >
         #{demoRemark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo" >
     update demo
-    <set>
-      <if test="demoRemark != null">
+    <set >
+      <if test="demoRemark != null" >
         demo_remark = #{demoRemark,jdbcType=VARCHAR},
       </if>
     </set>
     where demo_id = #{demoId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
+  <update id="updateByPrimaryKey" parameterType="com.yuan.ngu.springbootmybatis.model.Demo" >
     update demo
     set demo_remark = #{demoRemark,jdbcType=VARCHAR}
     where demo_id = #{demoId,jdbcType=VARCHAR}
   </update>
-  <resultMap id="BaseResultMap" type="com.yuan.ngu.springbootmybatis.model.Demo">
-    <id column="demo_id" jdbcType="VARCHAR" property="demoId" />
-    <result column="demo_remark" jdbcType="VARCHAR" property="demoRemark" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    demo_id, demo_remark
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from demo
-    where demo_id = #{demoId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from demo
-    where demo_id = #{demoId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
-    insert into demo (demo_id, demo_remark)
-    values (#{demoId,jdbcType=VARCHAR}, #{demoRemark,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
-    insert into demo
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="demoId != null">
-        demo_id,
-      </if>
-      <if test="demoRemark != null">
-        demo_remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="demoId != null">
-        #{demoId,jdbcType=VARCHAR},
-      </if>
-      <if test="demoRemark != null">
-        #{demoRemark,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
-    update demo
-    <set>
-      <if test="demoRemark != null">
-        demo_remark = #{demoRemark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where demo_id = #{demoId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yuan.ngu.springbootmybatis.model.Demo">
-    update demo
-    set demo_remark = #{demoRemark,jdbcType=VARCHAR}
-    where demo_id = #{demoId,jdbcType=VARCHAR}
-  </update>
-    <resultMap id="BaseResultMap" type="com.yuan.ngu.springbootmybatis.model.Demo">
-        <result column="DEMO_ID" jdbcType="VARCHAR" property="demoId" />
-        <result column="DEMO_REMARK" jdbcType="VARCHAR" property="demoRemark" />
-    </resultMap>
-    <sql id="Base_Column_List">
-        DEMO_ID, DEMO_REMARK
-    </sql>
-    <select id="selectList" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List" />
-        FROM DEMO
-        <where>
-            <if test="null != DEMO_ID">
-                and DEMO_ID = #{demoId}
-            </if>
-            <if test="null != demoRemark">
-                and DEMO_REMARK = #{demoRemark}
-            </if>
-        </where>
-    </select>
 </mapper>
