@@ -13,7 +13,7 @@
 </parent>
 ```
 
-> 继承的 es pom
+> 集成的 es pom
 
 ```
 <dependency>
