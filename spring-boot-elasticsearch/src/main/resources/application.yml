@@ -7,5 +7,5 @@ spring:
     elasticsearch:
       # elasticsearch集群名称，默认的是 elasticsearch
       cluster-name: elasticsearch
-      cluster-nodes: 192.168.163.70:9300
+      cluster-nodes: yuanngu.320.io:42365
 
