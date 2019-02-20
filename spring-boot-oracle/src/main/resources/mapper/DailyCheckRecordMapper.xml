@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuan.ngu.spring.boot.oracle.dao.DailyCheckRecordMapper">
+    <resultMap id="BaseResultMap" type="com.yuan.ngu.spring.boot.oracle.pojo.po.DailyCheckRecord">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="TYPE" property="type" jdbcType="DECIMAL"/>
+        <result column="INFO" property="info" jdbcType="VARCHAR"/>
+        <result column="TOTALPUSH_NUM" property="totalpushNum" jdbcType="DECIMAL"/>
+        <result column="ACTUALPUSH_NUM" property="actualpushNum" jdbcType="VARCHAR"/>
+        <result column="SUCCESS_NUM" property="successNum" jdbcType="VARCHAR"/>
+        <result column="NOTPUSH_NUM" property="notpushNum" jdbcType="VARCHAR"/>
+        <result column="FAILES_NUM" property="failesNum" jdbcType="VARCHAR"/>
+        <result column="DIFFACTUTALSETS" property="diffactutalsets" jdbcType="VARCHAR"/>
+        <result column="FAILESCORDERS" property="failescorders" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="VALID_FLAG" property="validFlag" jdbcType="DECIMAL"/>
+        <result column="RECEIVE_NUM" property="receiveNum" jdbcType="DECIMAL"/>
+        <result column="REPEAT_NUM" property="repeatNum" jdbcType="VARCHAR"/>
+        <result column="REPEATREC_NUM" property="repeatrecNum" jdbcType="VARCHAR"/>
+        <result column="REPEATRECSU_NUM" property="repeatrecsuNum" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID,TYPE,INFO,TOTALPUSH_NUM,ACTUALPUSH_NUM,SUCCESS_NUM,NOTPUSH_NUM,FAILES_NUM,DIFFACTUTALSETS,FAILESCORDERS,UPDATE_TIME,CREATE_TIME,
+        REMARK,VALID_FLAG,RECEIVE_NUM,REPEAT_NUM,REPEATREC_NUM,REPEATRECSU_NUM
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        select
+        <include refid="Base_Column_List"/>
+        from DAILY_CHECK_RECORD
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <select id="selectReconciliationList" resultType="com.yuan.ngu.spring.boot.oracle.pojo.dto.DailyCheckRecordDto">
+        select * from ( SELECT to_char(dcr.create_time,'yyyy-mm-dd') as createTime,
+        sum(case when dcr.type IN (1,4) then dcr.totalpush_num else 0 end )as totalpushNumWithPay ,
+        sum(case when dcr.type IN (1,4) then dcr.actualpush_num else 0 end )as actualpushNumWithPay ,
+        sum(case when dcr.type IN (1,4) then dcr.success_num else 0 end )as successNumWithPay ,
+        sum(case when dcr.type =2 then dcr.totalpush_num else 0 end )as totalpushNumWithSignFor ,
+        sum(case when dcr.type =2 then dcr.actualpush_num else 0 end )as actualpushNumWithSignFor ,
+        sum(case when dcr.type =2 then dcr.success_num else 0 end )as successNumWithSignFor ,
+        sum(case when dcr.type =3 then dcr.totalpush_num else 0 end )as totalpushNumWithRefund ,
+        sum(case when dcr.type =3 then dcr.actualpush_num else 0 end )as actualpushNumWithRefund ,
+        sum(case when dcr.type =3 then dcr.success_num else 0 end )as successNumWithRefund
+        FROM ULEAPP_SETTLEMENT.DAILY_CHECK_RECORD dcr
+        <where>
+            <if test="null != reconciliationBeginDate and  '' != reconciliationBeginDate">
+                create_time <![CDATA[>=]]> to_date(#{reconciliationBeginDate,jdbcType="VARCHAR"})
+            </if>
+            <if test="null != reconciliationEnd and  '' != reconciliationEnd">
+                create_time <![CDATA[<]]> to_date(#{reconciliationEnd,jdbcType="VARCHAR"})+1
+            </if>
+        </where>
+        group by to_char(dcr.create_time,'yyyy-mm-dd'))
+        order by to_date(createTime,'yyyy-mm-dd') desc
+    </select>
+</mapper>
