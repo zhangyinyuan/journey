@@ -18,6 +18,6 @@ public class DailyCheckRecordController {
     @RequestMapping(path = "/test", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Object test() {
         PageHelper.startPage(1, 10);
-        return dailyCheckRecordMapper.selectReconciliationList(null, null);
+        return dailyCheckRecordMapper.selectReconciliationList("2019-02-20", "2019-02-20");
     }
 }

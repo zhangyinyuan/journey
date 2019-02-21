@@ -46,10 +46,10 @@
         FROM ULEAPP_SETTLEMENT.DAILY_CHECK_RECORD dcr
         <where>
             <if test="null != reconciliationBeginDate and  '' != reconciliationBeginDate">
-                create_time <![CDATA[>=]]> to_date(#{reconciliationBeginDate,jdbcType="VARCHAR"})
+                and create_time <![CDATA[>=]]> to_date(#{reconciliationBeginDate,jdbcType=VARCHAR},'yyyy-mm-dd')
             </if>
             <if test="null != reconciliationEnd and  '' != reconciliationEnd">
-                create_time <![CDATA[<]]> to_date(#{reconciliationEnd,jdbcType="VARCHAR"})+1
+                and create_time <![CDATA[<]]> to_date(#{reconciliationEnd,jdbcType=VARCHAR},'yyyy-mm-dd')+1
             </if>
         </where>
         group by to_char(dcr.create_time,'yyyy-mm-dd'))
