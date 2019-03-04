@@ -55,4 +55,50 @@
         group by to_char(dcr.create_time,'yyyy-mm-dd'))
         order by to_date(createTime,'yyyy-mm-dd') desc
     </select>
+
+    <select id="selectReconciliationDetail" resultType="com.yuan.ngu.spring.boot.oracle.pojo.dto.ReconciliationDetailDto">
+        SELECT PSDR.ESC_ORDERID  AS escOrderId,PSDR.VERSION,PSDR.REMARK FROM ULEAPP_SETTLEMENT.PCS_SETT_DATA_RECORD PSDR
+        WHERE TO_CHAR(PSDR.SYNCH_TIME,'YYYY-MM-DD') = #{reconciliationDate,jdbcType=VARCHAR} AND PSDR.STATUS = 3 AND PSDR.VERSION IN
+        <foreach collection="versionList" item="version" index="index" open="(" separator="," close=")">
+            #{version}
+        </foreach>
+        GROUP BY PSDR.ESC_ORDERID,PSDR.VERSION,PSDR.REMARK
+    </select>
+
+
+    <select id="selectLandingAnomaly" resultType="java.lang.String">
+        SELECT
+        distinct t.esc_orderid
+        FROM
+        PCS_SETT_DATA_RECORD t
+        <where>
+        t.update_user is null
+        and t.version = #{version,jdbcType=BIGINT}
+        and t.valid_flag = 1
+        and t.status = 3
+        and t.synch_time <![CDATA[<]]> to_date(#{synchTime,jdbcType=VARCHAR}, 'yyyy-mm-dd')+ 1
+        and t.synch_time <![CDATA[>=]]> to_date(#{synchTime,jdbcType=VARCHAR}, 'yyyy-mm-dd')
+        <if test="null != createUser">
+            and t.create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        and not exists (
+        SELECT
+        1
+        FROM
+        PCS_SETT_DATA_RECORD t1
+        <where>
+            t1.synch_time <![CDATA[<]]> to_date(#{synchTime,jdbcType=VARCHAR}, 'yyyy-mm-dd')+ 1
+            and t1.synch_time <![CDATA[>=]]> to_date(#{synchTime,jdbcType=VARCHAR}, 'yyyy-mm-dd')
+            and t1.valid_flag = 1
+            and t1.version = #{version,jdbcType=BIGINT}
+            and t1.status = 2
+            and t1.esc_orderid = t.esc_orderid
+            <if test="null != createUser">
+                and t1.create_user = #{createUser,jdbcType=VARCHAR}
+            </if>
+        </where>
+        )
+        </where>
+    </select>
+
 </mapper>

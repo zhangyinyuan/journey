@@ -26,6 +26,14 @@ public class DailyCheckRecordDto implements Serializable {
     private BigDecimal actualpushNumWithRefund;
     //退款落地
     private BigDecimal successNumWithRefund;
+    //monitor 销售支付完成(数据落地)
+    private BigDecimal payDoneNum;
+    //销售入账完成
+    private BigDecimal payInAccountDoneNum;
+    //退款完成
+    private BigDecimal refundDoneNum;
+    //退款入账完成
+    private BigDecimal refundInAccountDoneNum;
 
     public String getCreateTime() {
         return createTime;
@@ -105,5 +113,37 @@ public class DailyCheckRecordDto implements Serializable {
 
     public void setSuccessNumWithRefund(BigDecimal successNumWithRefund) {
         this.successNumWithRefund = successNumWithRefund;
+    }
+
+    public BigDecimal getPayDoneNum() {
+        return payDoneNum;
+    }
+
+    public void setPayDoneNum(BigDecimal payDoneNum) {
+        this.payDoneNum = payDoneNum;
+    }
+
+    public BigDecimal getPayInAccountDoneNum() {
+        return payInAccountDoneNum;
+    }
+
+    public void setPayInAccountDoneNum(BigDecimal payInAccountDoneNum) {
+        this.payInAccountDoneNum = payInAccountDoneNum;
+    }
+
+    public BigDecimal getRefundDoneNum() {
+        return refundDoneNum;
+    }
+
+    public void setRefundDoneNum(BigDecimal refundDoneNum) {
+        this.refundDoneNum = refundDoneNum;
+    }
+
+    public BigDecimal getRefundInAccountDoneNum() {
+        return refundInAccountDoneNum;
+    }
+
+    public void setRefundInAccountDoneNum(BigDecimal refundInAccountDoneNum) {
+        this.refundInAccountDoneNum = refundInAccountDoneNum;
     }
 }
