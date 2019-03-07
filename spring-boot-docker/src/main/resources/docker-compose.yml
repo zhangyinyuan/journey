@@ -1,0 +1,4 @@
+spring-boot-docker:
+  build: ./webapp
+  ports:
+    - "80:8181"
