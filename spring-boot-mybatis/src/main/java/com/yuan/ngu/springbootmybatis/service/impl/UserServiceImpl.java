@@ -17,7 +17,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
-        return userMapper.deleteByPrimaryKey(id);
+        int deleteByPrimaryKey = userMapper.deleteByPrimaryKey(id);
+        return deleteByPrimaryKey;
     }
 
     @Override
@@ -26,11 +27,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.NESTED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public int insertSelective(User record) {
-        userMapper.insertSelective(record);
-        //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        return 1;
+        int insertSelective = userMapper.insertSelective(record);
+//        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//        "".substring(10);
+        return insertSelective;
     }
 
     @Override
