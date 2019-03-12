@@ -1,4 +1,4 @@
-package com.yuan.ngu.springbootaspect;
+package com.yuan.ngu.springbootaspect.aspect;
 
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
