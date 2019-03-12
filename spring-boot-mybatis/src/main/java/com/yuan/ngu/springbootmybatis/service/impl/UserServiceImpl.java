@@ -27,7 +27,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int insertSelective(User record) {
         int insertSelective = userMapper.insertSelective(record);
 //        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

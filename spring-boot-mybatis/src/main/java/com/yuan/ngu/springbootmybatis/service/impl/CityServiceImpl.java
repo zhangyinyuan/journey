@@ -31,7 +31,13 @@ public class CityServiceImpl implements ICityService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public int insert(City record) {
         User user = new User("xiong", "php");
-        int insertSelective = userService.insertSelective(user);
+        int insertSelective = 0;
+        try {
+
+            insertSelective = userService.insertSelective(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         logger.debug("user = {}", JSON.toJSONString(user));
         cityMapper.insert(new City("西安", "西安市"));
         return insertSelective;
