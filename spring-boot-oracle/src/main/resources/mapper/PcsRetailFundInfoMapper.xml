@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuan.ngu.spring.boot.oracle.dao.PcsRetailFundInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yuan.ngu.spring.boot.oracle.pojo.po.PcsRetailFundInfo">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="MERCHANT_ID" property="merchantId" jdbcType="VARCHAR"/>
+        <result column="MERCHANT_NAME" property="merchantName" jdbcType="VARCHAR"/>
+        <result column="ORG_PROVINCE_ID" property="orgProvinceId" jdbcType="VARCHAR"/>
+        <result column="ORG_PROVINCE_NAME" property="orgProvinceName" jdbcType="VARCHAR"/>
+        <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
+        <result column="DATA_HANDLE_TIME" property="dataHandleTime" jdbcType="TIMESTAMP"/>
+        <result column="DATA_FLAG" property="dataFlag" jdbcType="DECIMAL"/>
+        <result column="ORDER_TYPE" property="orderType" jdbcType="DECIMAL"/>
+        <result column="BUSI_TYPE" property="busiType" jdbcType="DECIMAL"/>
+        <result column="RECORD_DATE" property="recordDate" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="VALID_FLAG" property="validFlag" jdbcType="DECIMAL"/>
+        <result column="DATA_REMARK" property="dataRemark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, MERCHANT_ID, MERCHANT_NAME, ORG_PROVINCE_ID, ORG_PROVINCE_NAME, ORDER_NO, AMOUNT, 
+    DATA_HANDLE_TIME, DATA_FLAG, ORDER_TYPE, BUSI_TYPE, RECORD_DATE, CREATE_TIME, REMARK, 
+    VALID_FLAG, DATA_REMARK
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        select
+        <include refid="Base_Column_List"/>
+        from PCS_RETAIL_FUND_INFO
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from PCS_RETAIL_FUND_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.yuan.ngu.spring.boot.oracle.pojo.po.PcsRetailFundInfo">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select SEQ_PCS_RETAIL_FUND_INFO.NEXTVAL from dual
+        </selectKey>
+        insert into PCS_RETAIL_FUND_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="merchantId != null">
+                MERCHANT_ID,
+            </if>
+            <if test="merchantName != null">
+                MERCHANT_NAME,
+            </if>
+            <if test="orgProvinceId != null">
+                ORG_PROVINCE_ID,
+            </if>
+            <if test="orgProvinceName != null">
+                ORG_PROVINCE_NAME,
+            </if>
+            <if test="orderNo != null">
+                ORDER_NO,
+            </if>
+            <if test="amount != null">
+                AMOUNT,
+            </if>
+            <if test="dataHandleTime != null">
+                DATA_HANDLE_TIME,
+            </if>
+            <if test="dataFlag != null">
+                DATA_FLAG,
+            </if>
+            <if test="orderType != null">
+                ORDER_TYPE,
+            </if>
+            <if test="busiType != null">
+                BUSI_TYPE,
+            </if>
+            <if test="recordDate != null">
+                RECORD_DATE,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            CREATE_TIME,
+            VALID_FLAG,
+            <if test="dataRemark != null">
+                DATA_REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            <if test="merchantId != null">
+                #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantName != null">
+                #{merchantName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgProvinceId != null">
+                #{orgProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgProvinceName != null">
+                #{orgProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="dataHandleTime != null">
+                #{dataHandleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dataFlag != null">
+                #{dataFlag,jdbcType=DECIMAL},
+            </if>
+            <if test="orderType != null">
+                #{orderType,jdbcType=DECIMAL},
+            </if>
+            <if test="busiType != null">
+                #{busiType,jdbcType=DECIMAL},
+            </if>
+            <if test="recordDate != null">
+                #{recordDate,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            sysdate,1,
+            <if test="dataRemark != null">
+                #{dataRemark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yuan.ngu.spring.boot.oracle.pojo.po.PcsRetailFundInfo">
+        update PCS_RETAIL_FUND_INFO
+        <set>
+            <if test="merchantId != null">
+                MERCHANT_ID = #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantName != null">
+                MERCHANT_NAME = #{merchantName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgProvinceId != null">
+                ORG_PROVINCE_ID = #{orgProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgProvinceName != null">
+                ORG_PROVINCE_NAME = #{orgProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                AMOUNT = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="dataHandleTime != null">
+                DATA_HANDLE_TIME = #{dataHandleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dataFlag != null">
+                DATA_FLAG = #{dataFlag,jdbcType=DECIMAL},
+            </if>
+            <if test="orderType != null">
+                ORDER_TYPE = #{orderType,jdbcType=DECIMAL},
+            </if>
+            <if test="busiType != null">
+                BUSI_TYPE = #{busiType,jdbcType=DECIMAL},
+            </if>
+            <if test="recordDate != null">
+                RECORD_DATE = #{recordDate,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="validFlag != null">
+                VALID_FLAG = #{validFlag,jdbcType=DECIMAL},
+            </if>
+            <if test="dataRemark != null">
+                DATA_REMARK = #{dataRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+</mapper>

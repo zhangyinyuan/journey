@@ -25,7 +25,7 @@
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yuan.ngu.springbootmybatis.model.User" >
+  <insert id="insertSelective" parameterType="com.yuan.ngu.springbootmybatis.model.User" useGeneratedKeys="true" keyProperty="id"  >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
