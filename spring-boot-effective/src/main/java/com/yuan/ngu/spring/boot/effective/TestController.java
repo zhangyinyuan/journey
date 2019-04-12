@@ -25,7 +25,7 @@ public class TestController {
         map.put("checkURL", checkURL);
         map.put("isVideo", false);
         map.put("isAudio", false);
-        map.put("isJpg", false);
+        map.put("isImage", false);
         try {
             URL url = new URL(checkURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
