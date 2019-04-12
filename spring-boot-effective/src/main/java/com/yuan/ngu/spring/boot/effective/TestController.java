@@ -40,7 +40,7 @@ public class TestController {
                 map.put("isImage", true);
             }
         } catch (IOException e) {
-            logger.error("checkURL error videoURL = {}", checkURL, e);
+            logger.error("checkURL error checkURL = {}", checkURL, e);
         }
         return map;
     }
