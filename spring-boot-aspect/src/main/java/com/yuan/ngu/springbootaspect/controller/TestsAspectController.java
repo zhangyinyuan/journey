@@ -1,21 +1,24 @@
 package com.yuan.ngu.springbootaspect.controller;
 
-import com.yuan.ngu.springbootaspect.AAA;
-import com.yuan.ngu.springbootaspect.annotation.AspectAnnotation;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sun.security.provider.MD5;
 
 @RestController
-@RequestMapping(path = "/testsAspect")
+@CrossOrigin  //解决跨域.如果注解controller上,表示这个类下的所有接口都支持跨域.如果是在方法上.表示当前方法支持跨域
 public class TestsAspectController {
 
-    @RequestMapping(path = "/")
-//    @AspectAnnotation(description = "注解加在这里,AnnotationAspect可以扫描到")
-    public Object testsAspect() {
-//        if ("".length() == 0){
-//            throw new RuntimeException("测试异常0000");
-//        }
-        new AAA().run();
-        return "testsAspect";
+    @RequestMapping(path = "/testsAspect")
+    public Object testsAspect(@RequestHeader HttpHeaders headers) {
+//        String token = headers.get("token").get(0);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", "0000");
+        jsonObject.put("status", "success");
+        jsonObject.put("token", "xsdfsdfsakdfsdfj12301298310sjf");
+        return jsonObject;
     }
 }
