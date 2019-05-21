@@ -14,4 +14,6 @@ public interface ICityService {
     int updateByPrimaryKeySelective(City record);
 
     int updateByPrimaryKey(City record);
+
+    void newThreadMethod();
 }

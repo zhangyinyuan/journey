@@ -8,6 +8,7 @@ import com.yuan.ngu.springbootmybatis.service.ICityService;
 import com.yuan.ngu.springbootmybatis.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class CityServiceImpl implements ICityService {
     private CityMapper cityMapper;
     @Resource
     private IUserService userService;
+    @Autowired
+    private ICityService cityService;
 
     @Override
     public int deleteByPrimaryKey(Long id) {
@@ -40,6 +43,10 @@ public class CityServiceImpl implements ICityService {
         }
         logger.debug("user = {}", JSON.toJSONString(user));
         cityMapper.insert(new City("西安", "西安市"));
+        //事务不会起作用
+        new Thread(() -> newThreadMethod()).start();
+        //cityService.newThreadMethod() 事务生效
+//        new Thread(() -> cityService.newThreadMethod()).start();
         return insertSelective;
     }
 
@@ -61,5 +68,13 @@ public class CityServiceImpl implements ICityService {
     @Override
     public int updateByPrimaryKey(City record) {
         return 0;
+    }
+
+    @Override
+    @Transactional
+    public void newThreadMethod() {
+        logger.info("newThreadMethod called");
+        cityMapper.insert(new City("西安1", "西安市1"));
+        "".substring(0, 10);
     }
 }
