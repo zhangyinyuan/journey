@@ -16,4 +16,6 @@ public interface ICityService {
     int updateByPrimaryKey(City record);
 
     void newThreadMethod();
+
+    void a();
 }

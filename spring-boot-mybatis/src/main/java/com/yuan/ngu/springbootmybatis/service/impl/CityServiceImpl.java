@@ -31,23 +31,25 @@ public class CityServiceImpl implements ICityService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public int insert(City record) {
-        User user = new User("xiong", "php");
-        int insertSelective = 0;
-        try {
+//        User user = new User("xiong", "php");
+//        int insertSelective = 0;
+//        try {
+//
+//            insertSelective = userService.insertSelective(user);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        logger.debug("user = {}", JSON.toJSONString(user));
+//        cityMapper.insert(new City("西安", "西安市"));
+//        //事务不会起作用
+//        new Thread(() -> newThreadMethod()).start();
+//        //cityService.newThreadMethod() 事务生效
+////        new Thread(() -> cityService.newThreadMethod()).start();
 
-            insertSelective = userService.insertSelective(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        logger.debug("user = {}", JSON.toJSONString(user));
-        cityMapper.insert(new City("西安", "西安市"));
-        //事务不会起作用
-        new Thread(() -> newThreadMethod()).start();
-        //cityService.newThreadMethod() 事务生效
-//        new Thread(() -> cityService.newThreadMethod()).start();
-        return insertSelective;
+        a();
+        return 1;
     }
 
     @Override
@@ -73,6 +75,14 @@ public class CityServiceImpl implements ICityService {
     @Override
     @Transactional
     public void newThreadMethod() {
+        logger.info("newThreadMethod called");
+        cityMapper.insert(new City("西安1", "西安市1"));
+        "".substring(0, 10);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void a() {
         logger.info("newThreadMethod called");
         cityMapper.insert(new City("西安1", "西安市1"));
         "".substring(0, 10);

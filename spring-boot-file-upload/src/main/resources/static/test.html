@@ -1,0 +1,194 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
+
+		<script type="text/javascript" src="//i0.beta.ule.com/j/lib/jquery.js"></script>
+		<script type="text/javascript" src="//i0.beta.ule.com/j/jend/jend.js"></script>
+		<script type="text/javascript" src="./jquery.uploadify.js"></script>
+		<script type="text/javascript" src="./swfobject.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="https://i0.beta.ule.com/tomshopping/c/sys/2013/1217/pay.css" />
+		<link rel="stylesheet" type="text/css" href="./old.css" />
+
+		<script type="text/javascript">
+			function copyToClipboard(txt) {
+				if (window.clipboardData) {
+					window.clipboardData.clearData();
+					window.clipboardData.setData("Text", txt);
+					alert("已经成功复制到剪帖板上！");
+				} else if (navigator.userAgent.indexOf("Opera") != -1) {
+					window.location = txt;
+				} else if (window.netscape) {
+					try {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					} catch (e) {
+						alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
+					}
+					var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+					if (!clip) return;
+					var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+					if (!trans) return;
+					trans.addDataFlavor('text/unicode');
+					var str = new Object();
+					var len = new Object();
+					var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+					var copytext = txt;
+					str.data = copytext;
+					trans.setTransferData("text/unicode", str, copytext.length * 2);
+					var clipid = Components.interfaces.nsIClipboard;
+					if (!clip) return false;
+					clip.setData(trans, null, clipid.kGlobalClipboard);
+					alert("已经成功复制到剪帖板上！");
+				} else {
+					alert("被浏览器拒绝！");
+				}
+			}
+			//允许上传的最大的图片数量
+			var maxSumPhone = 5;
+			$(function() {
+				$('#maxSumPhone').text(maxSumPhone);
+				initUploadify("#vouchersImg");
+				$("#btn_submit").click(function() {
+					$.post("/upload?timestamp=" + new Date().getTime(), $(
+						"#theForm").serialize(), function(data) {
+						if ('0000' == data) {
+							alert("交纳入驻费申请成功，请等待邮乐审核！");
+							location.href = "/accountWeb/account/annualFeeManage/listFind.action";
+						} else {
+							alert(data);
+							$("#btn_submit").attr("disabled", false);
+						}
+					});
+				});
+
+				$("#copyTextButton").click(function() {
+					copyToClipboard($("#copyText").val());
+				});
+			});
+
+			/*** 图片删除 ***/
+			function removeImage(element) {
+				$("#vouchersImgPath").val("");
+				$(element).parent().remove();
+				$("#vouchersImgSpan").show();
+			}
+			/** * 图片上传 ** */
+			function initUploadify(selector) {
+				$(selector).uploadify({
+					'uploader': 'uploadify.swf',
+					'buttonImg': 'browse.png',
+					'cancelImg': 'cancel.png',
+					'script': '/upload?loginUserId=800101036',
+					'folder': '',
+					'fileDataName': 'file',
+					'auto': true,
+					'multi': true, //支持多文件
+					'simUploadLimit': 5,
+					'queueSizeLimit': 5,
+					'sizeLimit': 1024 * 1024 * 5,
+					'scriptAccess': 'always',
+					'width': 400,
+					'height': 23,
+					'fileDesc': '请选择JPG/JPNG/GIF/PNG图片',
+					'fileExt': '*.JPG;*.JPEG;*.GIF;*.PNG;',
+					'onInit': function() {
+						console.log("初始化");
+					},
+					'onSelect': function() {
+						console.log("选择了图片");
+					},
+					'onUploadStart': function() {
+						console.log("开始上传");
+					},
+					'onComplete': function(event, queueId, fileObj, response) {
+						console.log("onComplete");
+						var objData = eval("(" + response + ")");
+						var imgUrl = "";
+						if ("0000" == objData.returnCode) {
+							imgUrl = objData.imgUrl;
+						} else if ("1801" == objData.returnCode) {
+							alert("很抱歉，图片上传繁忙，可能是网络临时中断的原因，请再试上传一次！");
+							return;
+						} else {
+							alert(objData.returnMessage);
+							return;
+						}
+						var imgWidth = this.width;
+						var imgHeight = this.height;
+						var html = $(
+							'<div class="imgDiv1" style ="width: 202px;height: 202px;float: left;" ><img class="imgContext" src="' +
+							imgUrl +
+							'" isNew="true" /><img id="imgClose" src="cancel.png" class="imgClose" onclick="removeImage(this);" /></div>'
+						);
+						$(selector).parent().parent().find(".imgFrame3").append(html);
+						$(selector).parent().parent().find(".imgFrame1").css("border", "0px");
+						$(selector).parent().parent().find(".imgFrame1").css("background", "");
+					},
+					'onError': function(event, queueId, fileObj, errorObj) {
+						if (errorObj.type == 'File Size') {
+							JEND.page.alert('图片大小不能大于5M', function() {
+								jQuery('#vouchersImg').uploadifyCancel('RNGRRF');
+							});
+						} else {
+							JEND.page.alert('上传图片错误:' + errorObj.type + "  " + errorObj.info);
+						}
+						return;
+					},
+					'onAllComplete': function(event, queueId, fileObj, errorObj) {}
+
+				});
+
+				$(".imgContext").click(function() {
+					alert("hit");
+					JEND.util.popbox.show({
+						content: '<div id ="closePopbox"><img src="' + this.src + '"/></div>',
+						callback: function(elm) {
+							elm.find('#closePopbox').click(function() {
+								JEND.util.popbox.close();
+								return false;
+							});
+						}
+					});
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="wrapper" class="mainInner">
+			<ul class="pay_ul">
+				<li class="li_2x_high">
+					<span class="icon_span">4</span>
+					<div class="d_content">
+						<h3 class="c_title">如果您已经完成转账，请上传付款凭证并确认付款</h3>
+
+						<form id="theForm" enctype="multipart/form-data">
+							<tr>
+								<td style="text-align: left;width:600px">
+									<div class="p3 bdc bgf0 mb10" id="vouchersImgDiv" style="width:100%;height:60px">
+										<input type="hidden" id="vouchersImgPath" name="vouchersImgPath" value="" />
+										<span id="vouchersImgSpanx"><input type="file" multiple name="vouchersImg" id="vouchersImg" value="" /></span>
+										<div class="contip" style="position: relative;text-align: left;height: 60px;">*
+											文件格式支持JPG/JPEG/GIF/PNG,文件大小控制在5M以内,最多只能上传<span id="maxSumPhone"></span>张照片</div>
+										<div class="imgFrame1" style="height: auto;">
+											<div class="imgFrame3">
+
+											</div>
+										</div>
+
+									</div>
+								</td>
+							</tr>
+						</form>
+					</div>
+				</li>
+			</ul>
+			<p class="commit_p"><input type="button" id="btn_submit" value="提交" class="commit_bt" /></p>
+		</div>
+	</body>
+
+</html>
