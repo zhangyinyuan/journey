@@ -1,6 +1,7 @@
 package com.yuan.ngu.test.jdk18;
 
 import com.alibaba.fastjson.JSON;
+import org.junit.Test;
 
 public class BaseTest {
     public static void main(String[] args) {
@@ -10,5 +11,30 @@ public class BaseTest {
 
         String str = JSON.toJSONString("3");
         System.out.println(str);
+    }
+
+    @Test
+    public void testFinally(){
+        Object obj = null;
+        System.out.println(finallyReturn(obj));
+        return;
+    }
+
+    private Object finallyReturn(Object obj) {
+        try {
+           return obj.equals("");
+        } catch (NullPointerException e) {
+            throw e;
+        } finally {
+            return null;
+        }
+    }
+
+
+    @Test
+    public void test(){
+        Integer x  = 5;
+        int y = 5;
+        System.out.println(x == y);
     }
 }
