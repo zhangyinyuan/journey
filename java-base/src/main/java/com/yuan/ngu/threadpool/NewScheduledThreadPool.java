@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class newScheduledThreadPool {
+public class NewScheduledThreadPool {
     public static void main(String[] args) {
         ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
         //延迟后只执行一次
