@@ -36,13 +36,26 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <!--jmh begin-->
         <dependency>
-            <groupId>net.wimpi</groupId>
-            <artifactId>telnetd-x</artifactId>
-            <version>2.1</version>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.19</version>
+        </dependency>
+        <!--jmh end-->
+        <!--@slf4j begin-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.0</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <!--@slf4j end-->
     </dependencies>
 
     <build>
