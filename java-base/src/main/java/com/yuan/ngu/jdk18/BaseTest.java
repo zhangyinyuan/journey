@@ -2,7 +2,6 @@ package com.yuan.ngu.jdk18;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
-
 public class BaseTest {
     public static void main(String[] args) {
 //        String json = "{\"esc_orderid\":\"123456\",\"remark\":\"789\"}";
