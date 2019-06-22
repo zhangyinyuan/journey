@@ -1,4 +1,4 @@
-package com.yuan.ngu.test.jdk18;
+package com.yuan.ngu.jdk18;
 
 public class VolatileTest01 {
     volatile int i;
