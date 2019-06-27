@@ -9,14 +9,12 @@ public class NewFixedThreadPool {
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < 1000; i++) {
             final int index = i;
-            fixedThreadPool.execute(new Runnable() {
-                public void run() {
-                    System.out.println(Thread.currentThread().getName() + " " + (index + 1));
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            fixedThreadPool.execute(() -> {
+                System.out.println(Thread.currentThread().getName() + " " + (index + 1));
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             });
         }

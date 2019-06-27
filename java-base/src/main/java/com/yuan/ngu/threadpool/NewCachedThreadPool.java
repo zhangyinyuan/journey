@@ -19,11 +19,7 @@ public class NewCachedThreadPool {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            cachedThreadPool.execute(new Runnable() {
-                public void run() {
-                    System.out.println(Thread.currentThread().getName() + " " + index);
-                }
-            });
+            cachedThreadPool.execute(() -> System.out.println(Thread.currentThread().getName() + " " + index));
         }
     }
 }
