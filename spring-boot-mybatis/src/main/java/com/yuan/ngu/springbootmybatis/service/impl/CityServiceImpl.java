@@ -77,7 +77,7 @@ public class CityServiceImpl implements ICityService {
     public void newThreadMethod() {
         logger.info("newThreadMethod called");
         cityMapper.insert(new City("西安1", "西安市1"));
-        "".substring(0, 10);
+        //"".substring(0, 10);
     }
 
     @Override
@@ -85,6 +85,6 @@ public class CityServiceImpl implements ICityService {
     public void a() {
         logger.info("newThreadMethod called");
         cityMapper.insert(new City("西安1", "西安市1"));
-        "".substring(0, 10);
+        //"".substring(0, 10);
     }
 }
