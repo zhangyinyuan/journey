@@ -18,5 +18,6 @@ public class MyCommand implements Runnable {
             System.out.println("MyCommand 执行出错");
             e.printStackTrace();
         }
+        System.err.println(Thread.currentThread().getName() + " 执行任务结束： " +taskName );
     }
 }

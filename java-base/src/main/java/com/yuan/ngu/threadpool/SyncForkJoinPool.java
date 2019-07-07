@@ -20,7 +20,7 @@ public class SyncForkJoinPool {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         ComputeTask computeTask = new ComputeTask(begin, end);
         forkJoinPool.execute(computeTask);
-        System.out.println("ForkJoinPool 执行结果 = " + computeTask.getRawResult());
+        System.out.println("ujh 执行结果 = " + computeTask.getRawResult());
         System.out.println("ForkJoinPool  执行耗时 = " + (System.currentTimeMillis() - endTime));
     }
 
@@ -59,5 +59,4 @@ public class SyncForkJoinPool {
             return count;
         }
     }
-
 }

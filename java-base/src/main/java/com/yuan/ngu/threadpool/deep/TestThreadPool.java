@@ -1,8 +1,6 @@
 package com.yuan.ngu.threadpool.deep;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 举个例子
@@ -32,7 +30,7 @@ public class TestThreadPool {
         // 若想线程数 < corePoolSize的时候也起作用。需要设置executor.allowCoreThreadTimeOut(true);
         // 例如当前设置，当空闲线程超过200毫秒,则将空闲线程回收（销毁该空闲线程）
         long keepAliveTime = 200;
-        int capacity = 5;
+        int capacity = 10;
         //任务缓存队列，即workQueue，它用来存放等待执行的任务
         //　workQueue的类型为BlockingQueue<Runnable>，通常可以取下面三种类型：
         //　　1）ArrayBlockingQueue：基于数组的先进先出队列，此队列创建时必须指定大小；
@@ -53,23 +51,23 @@ public class TestThreadPool {
         //ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。
         //ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）
         //ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
-        for (int i = 0; i < 16; i++) {
+        //executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
+        for (int i = 0; i < 20; i++) {
             MyCommand command = new MyCommand("task-" + (i + 1));
             executor.execute(command);
-            Thread.sleep(10);
+            //Thread.sleep(1);
             //largestPoolSize() 用来记录线程池中曾经出现过的最大线程数
-            System.out.println("线程池中线程数目：" + executor.getPoolSize()
-                    + " , 队列中等待的任务数目：" + executor.getQueue().size()
-                    + " , 已经执行完的任务数目：" + executor.getCompletedTaskCount()
-                    + " , 任务数: " + executor.getTaskCount()
-                    + ",目前最大的线程数：" + executor.getLargestPoolSize()
-            );
+//            System.out.println("线程池中线程数目：" + executor.getPoolSize()
+//                    + " , 任务数: " + executor.getTaskCount()
+//                    + " , 队列中等待的任务数目：" + executor.getQueue().size()
+//                    + " , 已经执行完的任务数目：" + executor.getCompletedTaskCount()
+//                    + ",目前最大的线程数：" + executor.getLargestPoolSize()
+//            );
         }
         //优雅关闭，不再接收新的任务，直到队列中的所有任务全部执行完毕后，再关闭
         executor.shutdown();
         //暴力关闭。不管任务是否执行完毕，都会强行关闭线程池
-        executor.shutdownNow();
+        //executor.shutdownNow();
         System.out.println("executor.shutdown()");
     }
 }
