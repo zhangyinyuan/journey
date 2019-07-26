@@ -17,5 +17,5 @@ public interface ICityService {
 
     void newThreadMethod();
 
-    void a();
+    void insetTmp();
 }

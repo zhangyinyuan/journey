@@ -31,24 +31,17 @@ public class CityServiceImpl implements ICityService {
     }
 
     @Override
-//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public int insert(City record) {
-//        User user = new User("xiong", "php");
-//        int insertSelective = 0;
-//        try {
-//
-//            insertSelective = userService.insertSelective(user);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        logger.debug("user = {}", JSON.toJSONString(user));
-//        cityMapper.insert(new City("西安", "西安市"));
-//        //事务不会起作用
-//        new Thread(() -> newThreadMethod()).start();
-//        //cityService.newThreadMethod() 事务生效
-////        new Thread(() -> cityService.newThreadMethod()).start();
-
-        a();
+        User user = new User("xiong", "php");
+        int insertSelective = 0;
+        try {
+            //如果这个发放出现了异常, 即使这里抓了异常,当前这个service(CityServiceImpl)对应的当前方法的事务也是要回滚的,
+            insertSelective = userService.insertSelective(user);
+        } catch (Exception e) {
+            logger.debug("user = {}", JSON.toJSONString(user));
+            cityService.insetTmp();
+        }
         return 1;
     }
 
@@ -81,8 +74,8 @@ public class CityServiceImpl implements ICityService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void a() {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void insetTmp() {
         logger.info("newThreadMethod called");
         cityMapper.insert(new City("西安1", "西安市1"));
         //"".substring(0, 10);
