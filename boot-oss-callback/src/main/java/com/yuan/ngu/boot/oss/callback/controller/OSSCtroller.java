@@ -4,6 +4,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.yuan.ngu.boot.oss.callback.conf.OSSConfig;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -34,15 +35,14 @@ public class OSSCtroller {
      */
     @RequestMapping("/getSignature")
     public void getSignature(HttpServletRequest request, HttpServletResponse response, String results) {
-        String accessId = "LTAIdHx8BoYUmsoK"; // 请填写您的AccessKeyId。
-        String accessKey = "Kfs3LLLwpD4Rchh914ODtZqhL1RbX6"; // 请填写您的AccessKeySecret。
-        String endpoint = "oss-cn-shanghai.aliyuncs.com"; // 请填写您的 endpoint。
-        String bucket = "zhangyinyuan"; // 请填写您的 bucketname 。
+        String accessId = OSSConfig.accessId; // 请填写您的AccessKeyId。
+        String accessKey = OSSConfig.accessKey; // 请填写您的AccessKeySecret。
+        String endpoint = OSSConfig.endpoint; // 请填写您的 endpoint。
+        String bucket = OSSConfig.bucketName; // 请填写您的 bucketname 。
         String host = "http://" + bucket + "." + endpoint; // host的格式为 bucketname.endpoint
         // callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。
         String callbackUrl = "http://59.110.235.246:8889/boot-oss-callback/oss/callback";
-        String dir = "zhangyinyuan-dir-prefix/"; // 用户上传文件时指定的前缀。
-
+        String dir = ""; // 用户上传文件时指定的前缀。
         OSSClient client = new OSSClient(endpoint, accessId, accessKey);
         try {
             System.out.println("初始化设置的 callbackUrl = " + callbackUrl);
@@ -65,17 +65,14 @@ public class OSSCtroller {
             respMap.put("host", host);
             respMap.put("expire", String.valueOf(expireEndTime / 1000));
             // respMap.put("expire", formatISO8601Date(expiration));
-
             JSONObject jasonCallback = new JSONObject();
             jasonCallback.put("callbackUrl", callbackUrl);
             jasonCallback.put("callbackBody",
                     "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
-            jasonCallback.put("callbackBodyType", "application/x-www-form-urlencoded");
+            jasonCallback.put("callbackBodyType", "application/json");
             String base64CallbackBody = BinaryUtil.toBase64String(jasonCallback.toString().getBytes());
             respMap.put("callback", base64CallbackBody);
-
             JSONObject ja1 = JSONObject.fromObject(respMap);
-            // System.out.println(ja1.toString());
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "GET, POST");
             response(request, response, ja1.toString());
