@@ -56,11 +56,11 @@ public class HelloOSS {
 
     // Bucket用来管理所存储Object的存储空间，详细描述请参看“开发人员指南 > 基本概念 > OSS基本概念介绍”。
     // Bucket命名规范如下：只能包括小写字母，数字和短横线（-），必须以小写字母或者数字开头，长度必须在3-63字节之间。
-    private static String bucketName = "zoey0916";
+    private static String bucketName = "zoey0916789123";
 
     // Object是OSS存储数据的基本单元，称为OSS的对象，也被称为OSS的文件。详细描述请参看“开发人员指南 > 基本概念 > OSS基本概念介绍”。
     // Object命名规范如下：使用UTF-8编码，长度必须在1-1023字节之间，不能以“/”或者“\”字符开头。
-    private static String firstKey = "my-first-key";
+    private static String firstKey = "就是测试文件夹咋的/my-first-key";
 
     public static void main(String[] args) {
 

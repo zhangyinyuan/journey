@@ -19,10 +19,13 @@ public class LogDemoApplication {
 
     @RequestMapping("/testRequest")
     public void testRequest() {
-        System.out.println("testRequest");
-        logger.debug("logger.debug");
-        logger.info("logger.info");
-        logger.error("logger.error");
+
+        for (int i = 0; i < 1000; i++) {
+            System.out.println("testRequest");
+            logger.debug("logger.debug");
+            logger.info("logger.info");
+            logger.error("logger.error");
+        }
     }
 
 }

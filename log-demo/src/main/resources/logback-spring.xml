@@ -1,48 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false">
-    <contextName>Logback For demo Mobile</contextName>
-    <!-- 设置log日志存放地址 -->
-    <!--（改） 单环境设置 -->
-    <!--<property name="LOG_HOME" value="/Users/liuyanzhao/Desktop/temp/log" />-->
-    <!-- 多环境设置 -->
-    <springProfile name="dev">
-        <property name="LOG_HOME" value="/data/logs/dev/log-demo"/>
-    </springProfile>
-    <springProfile name="prod">
-        <property name="LOG_HOME" value="/data/logs/prod/log-demo"/>
-    </springProfile>
-    <!-- 控制台输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoder默认配置为PartternLayoutEncoder -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} -%msg%n</pattern>
-        </encoder>
-        <target>System.out</target>
-    </appender>
-    <!-- 按照每天生成日志文件 -->
-    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<configuration scan="true" scanPeriod="10 seconds">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <property name="LOG_PATH" value="/data/logs/invoice/"/>
+
+    <!--随着应用的运行时间越来越长，日志也会增长的越来越多，将他们输出到同一个文件并非一个好办法。RollingFileAppender 用于切分文件日志-->
+    <appender name="DEBUG_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名-->
+        <File>${LOG_PATH}/debug.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志文件输出的文件名 ,每天保存（侧翻）一次 -->
-            <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}.log</FileNamePattern>
-            <!--日志文件保留天数 -->
-            <MaxHistory>180</MaxHistory>
+            <!--归并日志文件输出的文件名-->
+            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>365*2</maxHistory>
         </rollingPolicy>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{25} -%msg%n</pattern>
-        </encoder>
-        <!--日志文件最大的大小 -->
-        <triggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>20MB</MaxFileSize>
-        </triggeringPolicy>
+        <!--日志输出格式：%d表示日期时间，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %logger{50} 表示logger名字最长50个字符，
+        否则按照句点分割。 %msg：日志消息，%n是换行符-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</Pattern>
+        </layout>
     </appender>
-    <!-- （改）过滤器，可以指定哪些包，哪个记录到等级， -->
-    <!-- 运用的场景比如，你只需要com.demo.controller包下的error日志输出。定义好name="com.demo.controller" level="ERROR" 就行了 -->
-    <logger name="com" level="DEBUG">
-        <appender-ref ref="ROLLING_FILE"/>
-    </logger>
-    <!-- 全局，控制台遇到INFO及以上级别就进行输出 -->
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-    </root>
+
+    <appender name="INFO_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/info.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>365*2</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="ERROR_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <File>${LOG_PATH}/error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>365*2</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE  -->
+    <springProfile name="local">
+        <root level="debug">
+            <appender-ref ref="DEBUG_FILE"/>
+            <!--<appender-ref ref="INFO_FILE"/>-->
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="!local">
+        <root level="info">
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
+
 </configuration>

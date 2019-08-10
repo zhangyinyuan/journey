@@ -157,10 +157,10 @@ var uploader = new plupload.Uploader({
 
     filters: {
         mime_types : [ //只允许上传图片和zip文件
-        { title : "Image files", extensions : "jpg,gif,png,bmp" },
+        { title : "Image files", extensions : "jpg,gif,png,bmp,ipa" },
         { title : "Zip files", extensions : "zip,rar" }
         ],
-        max_file_size : '10mb', //最大只能上传10mb的文件
+        max_file_size : '100mb', //最大只能上传100mb的文件
         prevent_duplicates : true //不允许选取重复文件
     },
 
