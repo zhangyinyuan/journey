@@ -5,19 +5,19 @@ import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.yuan.ngu.boot.oss.callback.conf.OSSConfig;
+import com.yuan.ngu.boot.oss.callback.util.FileUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -29,6 +29,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/oss")
 public class OSSCtroller {
+
+    @Value("${constant.plistUrl}")
+    private String fileUrl;
 
     /**
      * 获取签名
@@ -102,11 +105,36 @@ public class OSSCtroller {
         boolean ret = VerifyOSSCallbackRequest(request, ossCallbackBody);
         System.out.println("verify result : " + ret);
         System.out.println("OSS Callback Body:" + ossCallbackBody);
+        String fileUploadUrl = treatmentCallback(ossCallbackBody);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("fileUploadUrl", fileUploadUrl);
         if (ret) {
-            response(request, response, "{\"Status\":\"OK\",\"fileUploadUrl\":\"\"}", HttpServletResponse.SC_OK);
+            jsonObject.put("Status", "OK");
+            response(request, response, jsonObject.toString(), HttpServletResponse.SC_OK);
         } else {
-            response(request, response, "{\"Status\":\"verdify not ok\"}", HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put("Status", "verdify not ok");
+            // FIXME: 2019/8/6 为了防止页面报错。暂时返回成功
+//            response(request, response, jsonObject.toString(), HttpServletResponse.SC_BAD_REQUEST);
+            response(request, response, jsonObject.toString(), HttpServletResponse.SC_OK);
         }
+    }
+
+    public String treatmentCallback(String callback) {
+        if (StringUtils.isBlank(callback) ){
+            throw new RuntimeException("oss callback exception");
+        }
+        String keyUrl = "https://"+ OSSConfig.bucketName+"."+OSSConfig.endpoint+"/";
+        String filename = callback.split("&")[0];
+        String newIpaAddr = keyUrl + filename.replace("filename=","").replaceAll("\"","");
+        if (!callback.contains(".ipa")){
+            return newIpaAddr;
+        }
+        FileUtil.writeFile(fileUrl, FileUtil.readFileContent(fileUrl,newIpaAddr));
+        String newFileName = fileUrl.substring(fileUrl.lastIndexOf("/")+1);
+        File newFiles = new File(fileUrl);
+        OSSClient ossClient = new OSSClient("http://" +OSSConfig.endpoint, OSSConfig.accessId, OSSConfig.accessKey);
+        ossClient.putObject(OSSConfig.bucketName, newFileName, newFiles);
+        return keyUrl ;
     }
 
     /**
