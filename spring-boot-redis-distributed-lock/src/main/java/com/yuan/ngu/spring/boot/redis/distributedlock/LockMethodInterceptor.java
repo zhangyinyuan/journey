@@ -41,6 +41,7 @@ public class LockMethodInterceptor {
         final String lockKey = cacheKeyGenerator.getLockKey(pjp);
         try {
             //key不存在才能设置成功
+            //关于redis opsForValue 的方法 https://357029540.iteye.com/blog/2388965
             final Boolean success = lockRedisTemplate.opsForValue().setIfAbsent(lockKey, "");
             if (success) {
                 lockRedisTemplate.expire(lockKey, lock.expire(), lock.timeUnit());
